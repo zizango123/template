@@ -13,16 +13,6 @@ export default class MainActivity extends Component {
    ]);
   }
 
-  static navigationOptions = {
-    drawerLabel: 'Notifications',
-    drawerIcon: ({ tintColor }) => (
-      <Image
-        source={require('../img/pin.png')}
-        style={[styles.icon, {tintColor: tintColor}]}
-      />
-    ),
-  };
-
   render() {
     return (
       <View style={styles.container}>

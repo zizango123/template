@@ -38,7 +38,7 @@ class HamburgerIcon extends Component {
       First: {
         screen: MainActivity,
         navigationOptions: ({ navigation }) => ({
-          title: 'MainActivity',
+          title: 'Home',
           headerLeft : <HamburgerIcon navigationProps={ navigation }/>,
           headerStyle: {
             backgroundColor: '#FF9800'
@@ -53,7 +53,7 @@ class HamburgerIcon extends Component {
       Second: {
         screen: SecondActivity,
         navigationOptions: ({ navigation }) => ({
-          title: 'SecondActivity',
+          title: 'Profile',
           headerLeft : <HamburgerIcon navigationProps={ navigation }/>,
           headerStyle: {
             backgroundColor: '#FF9800'
