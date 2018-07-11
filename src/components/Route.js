@@ -10,6 +10,8 @@ import SecondActivity from './Second';
 
 import ThirdActivity from './Third';
 
+import FourthActivity from './Fourth';
+
 class HamburgerIcon extends Component {
 
   toggleDrawer=()=>{
@@ -41,7 +43,7 @@ class HamburgerIcon extends Component {
           title: 'Home',
           headerLeft : <HamburgerIcon navigationProps={ navigation }/>,
           headerStyle: {
-            backgroundColor: '#FF9800'
+            backgroundColor: '#f50057'
           },
           headerTintColor: '#fff',
         })
@@ -56,7 +58,7 @@ class HamburgerIcon extends Component {
           title: 'Profile',
           headerLeft : <HamburgerIcon navigationProps={ navigation }/>,
           headerStyle: {
-            backgroundColor: '#FF9800'
+            backgroundColor: '#f50057'
           },
           headerTintColor: '#fff',
         })
@@ -68,12 +70,26 @@ class HamburgerIcon extends Component {
       Third: {
         screen: ThirdActivity,
         navigationOptions: ({ navigation }) => ({
-          title: 'ThirdActivity',
+          title: 'Explore',
           headerLeft : <HamburgerIcon navigationProps={ navigation }/>,
           headerStyle: {
-            backgroundColor: '#FF9800'
+            backgroundColor: '#f50057'
           },
           headerTintColor: '#fff',
         })
       },
     });
+
+    export const FourthActivity_StackNavigator = StackNavigator({
+        Fourth: {
+          screen: FourthActivity,
+          navigationOptions: ({ navigation }) => ({
+            title: 'Search',
+            headerLeft : <HamburgerIcon navigationProps={ navigation }/>,
+            headerStyle: {
+              backgroundColor: '#f50057'
+            },
+            headerTintColor: '#fff',
+          })
+        },
+      });
