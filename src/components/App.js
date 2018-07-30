@@ -1,20 +1,18 @@
 import React, { Component } from 'react';
 
-import { StyleSheet, Platform, View, Text, ScrollView, Image, TouchableOpacity, YellowBox } from 'react-native';
+import { StyleSheet, Platform, ActivityIndicator, StatusBar, View, Text, ScrollView, Image, AsyncStorage, TouchableOpacity, YellowBox } from 'react-native';
 
-import { StackNavigator, DrawerNavigator, DrawerItems } from 'react-navigation';
+import { createSwitchNavigator, createStackNavigator, createDrawerNavigator, DrawerItems } from 'react-navigation';
 
-import Login from './src/components/Login';
+import Login from './Login';
 
-import { FirstActivity_StackNavigator, SecondActivity_StackNavigator, ThirdActivity_StackNavigator, FourthActivity_StackNavigator } from './src/components/Route';
+import { FirstActivity_StackNavigator, SecondActivity_StackNavigator, ThirdActivity_StackNavigator, FourthActivity_StackNavigator } from './Route';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 class HamburgerIcon extends Component {
 
   toggleDrawer=()=>{
-
-    console.log(this.props.navigationProps);
 
     this.props.navigationProps.toggleDrawer();
 
@@ -67,7 +65,7 @@ const DrawerContent = (props) => (
 )
 
 // drawer stack: screens for drawer navigation
-const DrawerStack = DrawerNavigator({
+const DrawerStack = createDrawerNavigator({
   One: {
     screen: FirstActivity_StackNavigator,
     navigationOptions :{
@@ -109,7 +107,7 @@ const DrawerStack = DrawerNavigator({
   contentComponent: DrawerContent,
 })
 
-const DrawerNavigation = StackNavigator({
+const DrawerNavigation = createStackNavigator({
   DrawerStack: { screen: DrawerStack }
 }, {
   headerMode: 'none', //separate header setting for each page on route.js
@@ -122,7 +120,7 @@ const DrawerNavigation = StackNavigator({
 })
 
 // login stack: screens that will be shown without the drawer menus
-const LoginStack = StackNavigator({
+const LoginStack = createStackNavigator({
   loginScreen: { screen: Login },
 //  secondScreen: { screen: Second },
 }, {
@@ -133,14 +131,49 @@ const LoginStack = StackNavigator({
   }
 })
 
-const template = StackNavigator({
-  loginStack: { screen: LoginStack },
-  drawerStack: { screen: DrawerNavigation }
-}, {
-  // Default config for all screens
-  headerMode: 'none',
-  title: 'One',
-  initialRouteName: 'loginStack'
-});
+class AuthLoadingScreen extends Component{
+  constructor(props){
+    super(props);
+    this._bootstrapAsync();
+  }
 
-export default template;
+  // Fetch the token from storage then navigate to our appropriate place
+  _bootstrapAsync = async () => {
+    const userToken = await AsyncStorage.getItem('listmtoken');
+
+    // This will switch to the App screen or Auth screen and this loading
+    // screen will be unmounted and thrown away.
+    this.props.navigation.navigate(userToken ? 'App' : 'Auth');
+  };
+
+  // Render any loading content that you like here
+render() {
+  return (
+    <View style={styles.container}>
+      <ActivityIndicator />
+      <StatusBar barStyle="default" />
+    </View>
+  );
+}
+
+};
+
+export default createSwitchNavigator(
+  {
+    AuthLoading: AuthLoadingScreen,
+    App: DrawerStack,
+    Auth: LoginStack,
+  },
+  {
+    initialRouteName: 'AuthLoading',
+  }
+);
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor:'red',
+    paddingVertical: 100,
+    alignItems:'center'
+  }
+});
